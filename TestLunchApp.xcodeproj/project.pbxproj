@@ -14,6 +14,8 @@
 		7AE0E5561AAFEEB700635724 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AE0E5551AAFEEB700635724 /* Images.xcassets */; };
 		7AE0E5591AAFEEB700635724 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AE0E5571AAFEEB700635724 /* LaunchScreen.xib */; };
 		7AE0E5651AAFEEB700635724 /* TestLunchAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0E5641AAFEEB700635724 /* TestLunchAppTests.m */; };
+		7AE0E5701AAFF2BD00635724 /* AddPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0E56F1AAFF2BD00635724 /* AddPhotoViewController.m */; };
+		7AE0E5731AB00BBF00635724 /* FinalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0E5721AB00BBF00635724 /* FinalViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		7AE0E55E1AAFEEB700635724 /* TestLunchAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestLunchAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AE0E5631AAFEEB700635724 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7AE0E5641AAFEEB700635724 /* TestLunchAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestLunchAppTests.m; sourceTree = "<group>"; };
+		7AE0E56E1AAFF2BD00635724 /* AddPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPhotoViewController.h; sourceTree = "<group>"; };
+		7AE0E56F1AAFF2BD00635724 /* AddPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPhotoViewController.m; sourceTree = "<group>"; };
+		7AE0E5711AB00BBF00635724 /* FinalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinalViewController.h; sourceTree = "<group>"; };
+		7AE0E5721AB00BBF00635724 /* FinalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinalViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +95,10 @@
 				7AE0E5551AAFEEB700635724 /* Images.xcassets */,
 				7AE0E5571AAFEEB700635724 /* LaunchScreen.xib */,
 				7AE0E5481AAFEEB700635724 /* Supporting Files */,
+				7AE0E56E1AAFF2BD00635724 /* AddPhotoViewController.h */,
+				7AE0E56F1AAFF2BD00635724 /* AddPhotoViewController.m */,
+				7AE0E5711AB00BBF00635724 /* FinalViewController.h */,
+				7AE0E5721AB00BBF00635724 /* FinalViewController.m */,
 			);
 			path = TestLunchApp;
 			sourceTree = "<group>";
@@ -220,7 +230,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7AE0E5511AAFEEB700635724 /* ViewController.m in Sources */,
+				7AE0E5701AAFF2BD00635724 /* AddPhotoViewController.m in Sources */,
 				7AE0E54E1AAFEEB700635724 /* AppDelegate.m in Sources */,
+				7AE0E5731AB00BBF00635724 /* FinalViewController.m in Sources */,
 				7AE0E54B1AAFEEB700635724 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,7 +309,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -333,7 +345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -346,6 +358,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TestLunchApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -356,6 +369,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TestLunchApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
