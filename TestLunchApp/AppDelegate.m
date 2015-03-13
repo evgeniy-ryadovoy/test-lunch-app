@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 
@@ -18,16 +19,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    destPath = [destPath stringByAppendingPathComponent:@"lunchList.plist"];
+    [Parse enableLocalDatastore];
     
-    // If the file doesn't exist in the Documents Folder, copy it.
-    NSFileManager *fileManager = [NSFileManager defaultManager];
+    // Initialize Parse.
+    [Parse setApplicationId:@"dcTNLmQS0xg3gFf7VaQbQlZM2hOi1ZxfdVv98aIs"
+                  clientKey:@"DBXJxiOEykv2JXeTR7FobBkJLvj6M3yrZUk8zmUW"];
     
-    if (![fileManager fileExistsAtPath:destPath]) {
-        NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"lunchList" ofType:@"plist"];
-        [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
-    }
+    // [Optional] Track statistics around application opens.
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     return YES;
 }

@@ -9,11 +9,13 @@
 #import "LunchListViewController.h"
 #import "LunchListTableViewCell.h"
 #import "FinalViewController.h"
+#import <Parse/Parse.h>
 
 @interface LunchListViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *lunchListTableView;
+@property (strong, nonatomic) IBOutlet UILabel *loadingLabel;
 
-@property NSMutableArray *lunchItems;
+@property NSArray *lunchItems;
 @property NSString *documentPath;
 
 @end
@@ -34,12 +36,19 @@
 }
 
 - (void)loadLunchList {
-    // Find out the path of luncheList.plist
-    NSString *path = [self.documentPath stringByAppendingPathComponent:@"lunchList.plist"];
-    // Load the file content and read the data into arrays
-    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
     
-    self.lunchItems = [dict objectForKey:@"lunchItems"];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        PFQuery *query = [PFQuery queryWithClassName:@"Lunch"];
+        self.lunchItems = [query findObjects];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.loadingLabel.hidden = YES;
+            self.lunchListTableView.hidden = NO;
+            [self.lunchListTableView reloadData];
+        });
+    });
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,7 +66,7 @@
     
     static NSString *simpleTableIdentifier = @"listItem";
     
-    NSDictionary *lunchItem = [self.lunchItems objectAtIndex:indexPath.row];
+    PFObject *lunchItem = [self.lunchItems objectAtIndex:indexPath.row];
     
     LunchListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
@@ -66,14 +75,16 @@
         cell = [nib objectAtIndex:0];
     }
     
-    cell.lunchItemName.text = [lunchItem objectForKey:@"lunchName"];
-    cell.lunchItemDesc.text = [lunchItem objectForKey:@"lunchDesc"];
+    cell.lunchItemName.text = lunchItem[@"Name"];
+    cell.lunchItemDesc.text = lunchItem[@"Description"];
     
-    NSArray *imagePaths = [lunchItem objectForKey:@"lunchThumbnails"];
+    PFFile *imageFile = lunchItem[@"Photo1"];
     
-    if (imagePaths.count) {
-        cell.lunchItemThumbnail.image = [UIImage imageNamed:[self.documentPath stringByAppendingPathComponent:imagePaths[0]]];
-    }
+    [imageFile getDataInBackgroundWithBlock:^(NSData *imageData, NSError *error) {
+        if (!error) {
+            cell.lunchItemThumbnail.image = [UIImage imageWithData:imageData];
+        }
+    }];
     
     return cell;
 }
@@ -90,9 +101,16 @@
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     FinalViewController *vc = [sb instantiateViewControllerWithIdentifier:@"FinalViewController"];
 
-    vc.lunch = [LunchObject loadLunch:[self.lunchItems objectAtIndex:indexPath.row]];
-    vc.needSave = NO;
-    [self.navigationController pushViewController:vc animated:YES];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        vc.lunch = [LunchObject loadLunch:[self.lunchItems objectAtIndex:indexPath.row]];
+    
+        dispatch_async(dispatch_get_main_queue(), ^{
+            vc.needSave = NO;
+            [self.navigationController pushViewController:vc animated:YES];
+
+        });
+    });
 }
 
 @end

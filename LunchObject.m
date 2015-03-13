@@ -8,6 +8,7 @@
 
 #import "LunchObject.h"
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
 @implementation LunchObject
 
@@ -20,53 +21,38 @@
 }
 
 - (void)saveLunch {
-    NSString *imagePath = nil;
-    NSMutableArray *photos = [[NSMutableArray alloc] init];
-    
     NSInteger count = self.lunchImages.count;
-        
+    
+    PFObject *object = [PFObject objectWithClassName:@"Lunch"];
+    object[@"Name"] = self.lunchName;
+    object[@"Description"] = self.lunchDesc;
+    
     for (NSInteger i = 0; i < count; ++i) {
         //Save images to separate files
         UIImage *photo = self.lunchImages[i];
-        NSString *imageName = [NSString stringWithFormat:@"%@-%i.png", self.lunchName, i];
-        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-        imagePath = [path stringByAppendingPathComponent:imageName];
         NSData *data = UIImagePNGRepresentation(photo);
-        [data writeToFile:imagePath atomically:YES];
-        [photos addObject:imageName];
+        PFFile *imageFile = [PFFile fileWithName:@"image.png" data:data];
+        NSString *fieldName = [NSString stringWithFormat:@"Photo%i", (i+1)];
+        object[fieldName] = imageFile;
     }
     
-    NSArray *keys = @[@"lunchName", @"lunchDesc", @"lunchThumbnails"];
-    NSArray *values = @[self.lunchName, self.lunchDesc, photos];
-    
-    NSDictionary *lunchItem = [NSDictionary dictionaryWithObjects:values forKeys:keys];
-    
-    // Find out the path of luncheList.plist
-    NSFileManager *manager = [NSFileManager defaultManager];
-    
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    path = [path stringByAppendingPathComponent:@"lunchList.plist"];
-    
-    if ([manager isWritableFileAtPath:path]) {
-        NSMutableDictionary* dataDict = [NSMutableDictionary dictionaryWithContentsOfFile:path];
-        NSMutableArray *lunchItems = [dataDict objectForKey:@"lunchItems"];
-        [lunchItems addObject:lunchItem];
-        [dataDict writeToFile:path atomically:NO];
-    }
+    [object saveInBackground];
 }
 
-//Load lunch object from list item
-+ (LunchObject *)loadLunch:(NSDictionary *)diskLunchItem {
-    LunchObject *newLunchObject = [[LunchObject alloc] init];
-    newLunchObject.lunchName = [diskLunchItem objectForKey:@"lunchName"];
-    newLunchObject.lunchDesc = [diskLunchItem objectForKey:@"lunchDesc"];
+//Load lunch object from list item. Method should be called in async queue
++ (LunchObject *)loadLunch:(PFObject *)diskLunchItem {
+    __block LunchObject *newLunchObject = [[LunchObject alloc] init];
+    newLunchObject.lunchName = diskLunchItem[@"Name"];
+    newLunchObject.lunchDesc = diskLunchItem[@"Description"];
     
-    NSArray *lunchImages = [diskLunchItem objectForKey:@"lunchThumbnails"];
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSMutableArray *lunchImages = [NSMutableArray arrayWithObjects:diskLunchItem[@"Photo1"],
+                                                                   diskLunchItem[@"Photo2"],
+                                                                   diskLunchItem[@"Photo3"],
+                                                                   diskLunchItem[@"Photo4"], nil];
     
-    for (NSString *imageName in lunchImages) {
-        NSString *imagePath = [path stringByAppendingPathComponent:imageName];
-        [newLunchObject.lunchImages addObject:[UIImage imageNamed:imagePath]];
+    for (PFFile *imageFile in lunchImages) {
+        NSData *imageData = [imageFile getData];
+        [newLunchObject.lunchImages addObject:[UIImage imageWithData:imageData]];
     }
     
     return newLunchObject;
