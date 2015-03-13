@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "AddPhotoViewController.h"
 
 @interface ViewController () <UITextFieldDelegate, UITextViewDelegate>
 @property (strong, nonatomic) IBOutlet UITextField *lunchNameTextField;
@@ -20,13 +21,16 @@
     [super viewDidLoad];
     self.lunchNameTextField.delegate = self;
     self.lunchDescriptionTextView.delegate = self;
+    
+    if (!self.lunch) {
+        self.lunch = [[LunchObject alloc] init];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    self.lunchDescriptionTextView = nil;
-    self.lunchNameTextField = nil;
+    self.lunch = nil;
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
@@ -47,10 +51,10 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     if ([segue.identifier isEqualToString:@"addPhoto"]) {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:self.lunchNameTextField.text forKey:@"lunchName"];
-        [userDefaults setObject:self.lunchDescriptionTextView.text forKey:@"lunchDesc"];
-        [userDefaults synchronize];
+        self.lunch.lunchName = self.lunchNameTextField.text;
+        self.lunch.lunchDesc = self.lunchDescriptionTextView.text;
+        AddPhotoViewController *vc = segue.destinationViewController;
+        vc.lunch = self.lunch;
     }
 }
 

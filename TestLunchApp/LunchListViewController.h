@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  LunchListViewController.h
 //  TestLunchApp
 //
 //  Created by Evgeniy on 11.03.15.
@@ -7,11 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LunchObject.h"
 
-@interface ViewController : UIViewController
-
-@property LunchObject *lunch;
+@interface LunchListViewController : UIViewController
 
 @end
-

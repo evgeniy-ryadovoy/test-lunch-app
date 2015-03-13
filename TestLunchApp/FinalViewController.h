@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LunchObject.h"
 
 @interface FinalViewController : UIViewController
 
-@property NSArray *photosArray;
+@property LunchObject *lunch;
+@property BOOL needSave;
 
 @end

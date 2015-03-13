@@ -23,19 +23,30 @@
     self.photosCollectionView.delegate = self;
     self.photosCollectionView.dataSource = self;
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    self.lunchNameTextLabel.text = [userDefaults objectForKey:@"lunchName"];
-    self.lunchDescriptionTextLabel.text = [userDefaults objectForKey:@"lunchDesc"];
+    if (!self.lunch) {
+        self.lunch = [[LunchObject alloc] init];
+    }
+    
+    self.lunchNameTextLabel.text = self.lunch.lunchName;
+    self.lunchDescriptionTextLabel.text = self.lunch.lunchDesc;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    
+    if (self.needSave) {
+        [self.lunch saveLunch];
+        self.needSave = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    self.photosArray = nil;
+    self.lunch = nil;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.photosArray.count;
+    return self.lunch.lunchImages.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -44,7 +55,7 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    imageView.image = [self.photosArray objectAtIndex:indexPath.row];
+    imageView.image = [self.lunch.lunchImages objectAtIndex:indexPath.row];
     
     return cell;
 }

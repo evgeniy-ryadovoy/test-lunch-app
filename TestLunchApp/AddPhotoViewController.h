@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LunchObject.h"
 
 @interface AddPhotoViewController : UIViewController
+
+@property LunchObject *lunch;
 
 @end

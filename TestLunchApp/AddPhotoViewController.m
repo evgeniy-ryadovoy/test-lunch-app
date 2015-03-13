@@ -16,7 +16,6 @@ static int MAX_PHOTOS = 4;
                                       UINavigationControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UICollectionView *photosCollectionView;
-@property NSMutableArray *lunchImages;
 
 @end
 
@@ -24,21 +23,23 @@ static int MAX_PHOTOS = 4;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.lunchImages = [[NSMutableArray alloc] init];
     self.photosCollectionView.delegate = self;
     self.photosCollectionView.dataSource = self;
-    // Do any additional setup after loading the view.
+    
+    if (!self.lunch) {
+        self.lunch = [[LunchObject alloc] init];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    self.lunchImages = nil;
+    self.lunch = nil;
 }
 
 - (IBAction)addPhotoAction:(id)sender {
     
-    if (self.lunchImages.count == MAX_PHOTOS) {
+    if (self.lunch.lunchImages.count == MAX_PHOTOS) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"You can't add more photo"
                                                             delegate:nil
@@ -60,7 +61,9 @@ static int MAX_PHOTOS = 4;
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
-    [self.lunchImages addObject:chosenImage];
+    chosenImage = [self imageWithImage:chosenImage scaledToSize:CGSizeMake(64, 64)];
+    
+    [self.lunch.lunchImages addObject:chosenImage];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 
@@ -68,7 +71,7 @@ static int MAX_PHOTOS = 4;
     [self.photosCollectionView performBatchUpdates:^{
         
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
-        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:([self.lunchImages count] - 1)
+        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:([self.lunch.lunchImages count] - 1)
                                                           inSection:0]];
         [self.photosCollectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
     } completion:nil];
@@ -79,7 +82,7 @@ static int MAX_PHOTOS = 4;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.lunchImages.count;
+    return self.lunch.lunchImages.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -88,7 +91,7 @@ static int MAX_PHOTOS = 4;
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    imageView.image = [self.lunchImages objectAtIndex:indexPath.row];
+    imageView.image = [self.lunch.lunchImages objectAtIndex:indexPath.row];
     
     return cell;
 }
@@ -97,8 +100,19 @@ static int MAX_PHOTOS = 4;
     
     if ([segue.identifier isEqualToString:@"finalScreen"]) {
         FinalViewController *vc = segue.destinationViewController;
-        vc.photosArray = self.lunchImages;
+        vc.lunch = self.lunch;
+        vc.needSave = YES;
     }
+}
+
+// Resize images from library to decrease memory usage
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 
 @end
