@@ -7,14 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
 @interface LunchObject : NSObject
 
 @property NSString *lunchName;
 @property NSString *lunchDesc;
 @property NSMutableArray *lunchImages;
+@property CGFloat longtitude;
+@property CGFloat latitude;
+@property NSString *timestamp;
 
 - (void)saveLunch;
-+ (LunchObject *)loadLunch:(NSDictionary *)diskLunchItem;
++ (LunchObject *)loadLunch:(PFObject *)diskLunchItem;
 
 @end

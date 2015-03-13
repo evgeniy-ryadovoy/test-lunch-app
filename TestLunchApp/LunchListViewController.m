@@ -10,6 +10,7 @@
 #import "LunchListTableViewCell.h"
 #import "FinalViewController.h"
 #import <Parse/Parse.h>
+#import "MapViewController.h"
 
 @interface LunchListViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *lunchListTableView;
@@ -111,6 +112,14 @@
 
         });
     });
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"showMap"]) {
+        MapViewController *vc = segue.destinationViewController;
+        vc.lunchItems = self.lunchItems;
+    }
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #import "LunchObject.h"
 #import <UIKit/UIKit.h>
-#import <Parse/Parse.h>
 
 @implementation LunchObject
 
@@ -16,6 +15,9 @@
     self = [super init];
     self.lunchName = [[NSString alloc] init];
     self.lunchDesc = [[NSString alloc] init];
+    self.longtitude = 0;
+    self.latitude = 0;
+    self.timestamp = [[NSString alloc] init];
     self.lunchImages = [[NSMutableArray alloc] init];
     return self;
 }
@@ -26,6 +28,9 @@
     PFObject *object = [PFObject objectWithClassName:@"Lunch"];
     object[@"Name"] = self.lunchName;
     object[@"Description"] = self.lunchDesc;
+    object[@"Longtitude"] = [NSNumber numberWithFloat:self.longtitude];
+    object[@"Latitude"] = [NSNumber numberWithFloat:self.latitude];
+    object[@"Created"] = self.timestamp;
     
     for (NSInteger i = 0; i < count; ++i) {
         //Save images to separate files
@@ -44,6 +49,9 @@
     __block LunchObject *newLunchObject = [[LunchObject alloc] init];
     newLunchObject.lunchName = diskLunchItem[@"Name"];
     newLunchObject.lunchDesc = diskLunchItem[@"Description"];
+    newLunchObject.longtitude = [diskLunchItem[@"Longtitude"] floatValue];
+    newLunchObject.latitude = [diskLunchItem[@"Latitude"] floatValue];
+    newLunchObject.timestamp = diskLunchItem[@"Created"];
     
     NSMutableArray *lunchImages = [NSMutableArray arrayWithObjects:diskLunchItem[@"Photo1"],
                                                                    diskLunchItem[@"Photo2"],
