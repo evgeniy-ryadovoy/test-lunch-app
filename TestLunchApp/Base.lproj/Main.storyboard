@@ -70,9 +70,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Lunch" id="bcI-rd-obG">
-                        <barButtonItem key="rightBarButtonItem" title="Continue" id="tzG-LM-M4a">
+                        <barButtonItem key="rightBarButtonItem" title="Add Photo" id="D8M-at-S2u">
                             <connections>
-                                <segue destination="Qco-t0-yVs" kind="show" identifier="addPhoto" id="BQB-ea-Dgl"/>
+                                <segue destination="Qco-t0-yVs" kind="show" identifier="addPhoto" id="Soa-ys-JDJ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -485,10 +485,10 @@
             </objects>
             <point key="canvasLocation" x="1540" y="982"/>
         </scene>
-        <!--Take photo-->
+        <!--Ice Cream-->
         <scene sceneID="V7C-kT-oTR">
             <objects>
-                <viewController id="agh-ZN-osu" customClass="TakePhotoViewController" sceneMemberID="viewController">
+                <viewController id="agh-ZN-osu" customClass="IceCreamViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1PE-Ob-oQI"/>
                         <viewControllerLayoutGuide type="bottom" id="MXo-lH-7di"/>
@@ -498,34 +498,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecM-1q-Vjc">
-                                <rect key="frame" x="113" y="379" width="95" height="46"/>
+                                <rect key="frame" x="113" y="120" width="95" height="46"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Take Photo">
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Buy">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" red="0.9594381313" green="0.9594381313" blue="0.9594381313" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="takePhoto:" destination="agh-ZN-osu" eventType="touchUpInside" id="d2i-R0-DJM"/>
+                                    <action selector="buyIceCream:" destination="agh-ZN-osu" eventType="touchUpInside" id="jaE-AU-6aY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Buy this Ice Cream" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gVo-e9-xhW">
+                                <rect key="frame" x="16" y="72" width="288" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icecreamcone.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="yOg-JG-OvF">
+                                <rect key="frame" x="16" y="168" width="288" height="260"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Take photo" id="z78-8k-vDf"/>
+                    <navigationItem key="navigationItem" title="Ice Cream" id="z78-8k-vDf"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="photoButton" destination="ecM-1q-Vjc" id="PKJ-fj-Gx6"/>
+                        <outlet property="buyButton" destination="ecM-1q-Vjc" id="cPl-fi-QuX"/>
+                        <outlet property="topLabel" destination="gVo-e9-xhW" id="Kru-SZ-XQN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3j2-l4-Frr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2004" y="1650"/>
         </scene>
-        <!--Take Photo-->
+        <!--Buy-->
         <scene sceneID="J9Y-pw-ecS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7O9-SX-bTI" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Take Photo" id="5yW-TH-Rd0"/>
+                    <tabBarItem key="tabBarItem" title="Buy" id="5yW-TH-Rd0"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="IND-YO-FpS">
@@ -542,4 +553,7 @@
             <point key="canvasLocation" x="1540" y="1650"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icecreamcone.jpg" width="300" height="377"/>
+    </resources>
 </document>
